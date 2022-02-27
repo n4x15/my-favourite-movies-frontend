@@ -1,0 +1,9 @@
+{
+    "auth":{
+        "login": "login",
+        "password":"password",
+        "incorrectUser":"Incorrect User",
+        "emptyField": "Field is empty",
+        "enter":"Enter"
+    }
+}
