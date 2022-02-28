@@ -1,0 +1,9 @@
+{
+    "auth":{
+        "login": "Логин",
+        "password":"Пароль",
+        "incorrectUser":"Неверный пользователь",
+        "emptyField":"Пустое поле",
+        "enter":"Войти"
+    }
+}
