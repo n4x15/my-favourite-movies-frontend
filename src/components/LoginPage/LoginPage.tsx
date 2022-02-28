@@ -15,13 +15,9 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
- const onSubmit = (input: any) => {
-    if (checkPassword(input) === true){
-      navigate("/MainPage")
-    }else{
-      return {[FORM_ERROR]: t("auth.incorrectUser")};
+ const onSubmit = (input: {login: string, password: string}) => {
+    return checkPassword(input.login, input.password) ?  navigate("/MainPage") : {[FORM_ERROR]: t("auth.incorrectUser")};
     }
-  }
 
   return (  
  <FormWrapper>
@@ -42,7 +38,7 @@ const LoginPage = () => {
           <LoginForm onSubmit={handleSubmit}>
             <img src={logo} alt="logo" className="w-100"/>
             <Label>{t("auth.login")}</Label>
-            <LoginField name="login" isPassword={false} label="auth.login"/>
+            <LoginField name="login" label="auth.login"/>
             <Label>{t("auth.password")}</Label>
             <LoginField name="password" isPassword={true} label="auth.password"/> 
             {submitError && <ErrLabel> {submitError}</ErrLabel>}

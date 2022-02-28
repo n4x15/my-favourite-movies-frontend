@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import { useTranslation } from "react-i18next";
 import { ErrLabel } from "../assets/LoginPageStyledComponents";
 
-const LoginField = (props: { name: string , label: string, isPassword: boolean}) => {
+const LoginField = (props: {name: string , label: string, isPassword?: boolean}) => {
   const { t, i18n } = useTranslation();
   return (
     <Field name={props.name}>
