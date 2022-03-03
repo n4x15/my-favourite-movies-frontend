@@ -1,3 +1,5 @@
+import { moviesUrl, genresUrl } from "./Urls";
+
 const accounts = {
   admin: "JfzSTg",
   first: "yQKhEe",
@@ -20,3 +22,51 @@ export const checkPassword = (login: any, password: string) => {
     }
   }
 };
+
+export const getGenres = (language: string) => {
+  return fetch(
+    `${genresUrl}?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`,
+    { method: "GET" }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data.genres;
+    })
+    .catch(() => {
+      return {};
+    });
+};
+
+interface GetMoviesArgs {
+  language?: string;
+  with_genres?: string;
+  without_genres?: string;
+  year?: number;
+  rating?: number;
+}
+
+const mapArgsToApi = (filters: GetMoviesArgs): string =>
+  Object.entries({
+    api_key: process.env.REACT_APP_API_KEY,
+    ...filters,
+    ...(filters.rating ? { "vote_average.gte": `${filters.rating}` } : {}),
+    page: 1,
+  })
+    .map(([key, val]) => `${key}=${val}`)
+    .join("&");
+
+export const getMovies = (filters: GetMoviesArgs) => {
+  const effectiveUrl = `${moviesUrl}?${mapArgsToApi(filters)}`;
+  return fetch(effectiveUrl, { method: "GET" })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data.results;
+    })
+    .catch(() => {
+      return {};
+    });
+};  
