@@ -1,5 +1,5 @@
 import axios from "axios";
-import { url, genres, movies } from "./Urls";
+import { moviesUrl, genresUrl } from "./Urls";
 
 const accounts = {
   admin: "JfzSTg",
@@ -24,28 +24,41 @@ export const checkPassword = (login: any, password: string) => {
   }
 };
 
-export const getGenres = async (
-  language: string,
-) => {
- const response = await axios
-    .get(
-      `${url}${genres}?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
-    )
-    return response.data.genres
+export const getGenres = async (language: string) => {
+  try {
+    const response = await axios.get(
+      `${genresUrl}?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
+    );
+    return response.data.genres;
+  } catch {
+    return {};
+  }
 };
 
-export const getMovies = async  (
-language: string,
-with_genres: string,
-without_genres: string,
-year: number,
-rating: number
-) => {
-  const response = await axios
-  .get(
-    `${url}${movies}?api_key=${process.env.REACT_APP_API_KEY}&language=${language}
-    &with_genres=${with_genres}&without_genres=${without_genres}
-    &vote_average.gte=${rating}&year=${year}&page=1`
-  )
-  return response.data.results
-}; 
+interface GetMoviesArgs {
+  language?: string;
+  with_genres?: string;
+  without_genres?: string;
+  year?: number;
+  rating?: number;
+}
+
+const mapArgsToApi = (filters: GetMoviesArgs): string =>
+  Object.entries({
+    api_key: process.env.REACT_APP_API_KEY,
+    ...filters,
+    ...(filters.rating ? { "vote_average.gte": `${filters.rating}` } : {}),
+    page: 1,
+  })
+    .map(([key, val]) => `${key}=${val}`)
+    .join("&");
+
+export const getMovies = async (filters: GetMoviesArgs) => {
+  try {
+    const effectiveUrl = `${moviesUrl}?${mapArgsToApi(filters)}`;
+    const response = await axios.get(effectiveUrl);
+    return response.data.results;
+  } catch {
+    return {};
+  }
+};  

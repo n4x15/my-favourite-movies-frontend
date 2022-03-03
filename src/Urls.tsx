@@ -1,3 +1,2 @@
-export const url = "https://api.themoviedb.org/3"
-export const movies = "/discover/movie/"
-export const genres = "/genre/movie/list"
+export const moviesUrl = "https://api.themoviedb.org/3/discover/movie/"
+export const genresUrl = "https://api.themoviedb.org/3/genre/movie/list"
