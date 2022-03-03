@@ -1,4 +1,3 @@
-import axios from "axios";
 import { moviesUrl, genresUrl } from "./Urls";
 
 const accounts = {
@@ -24,15 +23,20 @@ export const checkPassword = (login: any, password: string) => {
   }
 };
 
-export const getGenres = async (language: string) => {
-  try {
-    const response = await axios.get(
-      `${genresUrl}?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
-    );
-    return response.data.genres;
-  } catch {
-    return {};
-  }
+export const getGenres = (language: string) => {
+  return fetch(
+    `${genresUrl}?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`,
+    { method: "GET" }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data.genres;
+    })
+    .catch(() => {
+      return {};
+    });
 };
 
 interface GetMoviesArgs {
@@ -53,12 +57,16 @@ const mapArgsToApi = (filters: GetMoviesArgs): string =>
     .map(([key, val]) => `${key}=${val}`)
     .join("&");
 
-export const getMovies = async (filters: GetMoviesArgs) => {
-  try {
-    const effectiveUrl = `${moviesUrl}?${mapArgsToApi(filters)}`;
-    const response = await axios.get(effectiveUrl);
-    return response.data.results;
-  } catch {
-    return {};
-  }
+export const getMovies = (filters: GetMoviesArgs) => {
+  const effectiveUrl = `${moviesUrl}?${mapArgsToApi(filters)}`;
+  return fetch(effectiveUrl, { method: "GET" })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data.results;
+    })
+    .catch(() => {
+      return {};
+    });
 };  
