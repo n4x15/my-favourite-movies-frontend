@@ -1,9 +1,16 @@
 {
-    "auth":{
-        "login": "login",
-        "password":"password",
-        "incorrectUser":"Incorrect User",
-        "emptyField": "Field is empty",
-        "enter":"Enter"
-    }
+  "auth": {
+    "login": "login",
+    "password": "password",
+    "incorrectUser": "Incorrect User",
+    "emptyField": "Field is empty",
+    "enter": "Enter"
+  },
+  "main": {
+    "header": "My favorite movies",
+    "hello": "Hello",
+    "genres": "Select your favorites genres",
+    "logout": "Logout",
+    "add": "Add"
+  }
 }

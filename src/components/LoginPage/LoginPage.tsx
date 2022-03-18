@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./assets/logo.svg";
-import "./assets/LoginPage.css";
 import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import { Form } from "react-final-form";
