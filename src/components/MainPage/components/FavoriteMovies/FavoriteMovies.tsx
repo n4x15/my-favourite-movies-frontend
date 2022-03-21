@@ -21,7 +21,7 @@ const FavoriteMovies: React.FC<IFavoriteMovies> = ({ isBlockView }) => {
           prev.concat({
             ...movie,
             ...{
-              isWatched: watched.indexOf(movie.id) >= 0 ? true : false,
+              isWatched: watched.indexOf(movie.id) >= 0,
             },
           })
         );
