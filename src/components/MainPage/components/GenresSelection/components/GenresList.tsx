@@ -1,14 +1,7 @@
 import React from "react";
-import { IGenre } from "../../../../../Utils";
-import {
-  GenreCard,
-  GenresWrapper,
-} from "../../../assets/MainPageStyledComponents";
+import { IGenre, IGenreListProps } from "../../../../../types/genresSelection";
+import { GenreCard, GenresWrapper } from "../assets/styles";
 
-interface IGenreListProps {
-  genres: IGenre[];
-  handleGenres: (index: number) => void;
-}
 const GenresList: React.FC<IGenreListProps> = ({ genres, handleGenres }) => {
   return (
     <GenresWrapper>

@@ -1,10 +1,16 @@
 import React from "react";
-import { IMovie, IFavoriteMovieProps } from "../../../../../Utils";
+import {
+  IMovie,
+  IFavoriteMovieProps,
+} from "../../../../../types/favoriteMovies";
 import { posterUrl } from "../../../../../Urls";
 import {
   MovieWrapperBlock,
   MoviePresentBlock,
-} from "../../../assets/MainPageStyledComponents";
+  Title,
+  ContentWrapperBlock,
+  Overview,
+} from "../assets/styles";
 import checkmark from "../../../assets/checkmark.svg";
 import cross from "../../../assets/cross.svg";
 
@@ -21,8 +27,8 @@ const FavoriteMovieBlock: React.FC<IFavoriteMovieProps> = ({
             key={movie.id}
             isWatched={movie.isWatched ? true : false}
           >
-            <h1 className='text-xl m-2'>{movie.title}</h1>
-            <div className='flex items-start'>
+            <Title>{movie.title}</Title>
+            <ContentWrapperBlock>
               <img src={posterUrl + movie.poster_path} alt={movie.title} />
               <button onClick={() => handleIsWatched(index, movie.id)}>
                 <img src={checkmark} />
@@ -30,8 +36,8 @@ const FavoriteMovieBlock: React.FC<IFavoriteMovieProps> = ({
               <button onClick={() => handleDeleteMovie(movie.id)}>
                 <img src={cross} />
               </button>
-            </div>
-            <span className='m-2'>{movie.overview}</span>
+            </ContentWrapperBlock>
+            <Overview>{movie.overview}</Overview>
           </MoviePresentBlock>
         );
       })}

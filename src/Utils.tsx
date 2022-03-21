@@ -71,7 +71,7 @@ export const getMovies = (filters: GetMoviesArgs) => {
     });
 };
 
-export const  getMovie = (id: number, language?: string ) => {
+export const getMovie = (id: number, language?: string) => {
   return fetch(
     `${movieUrl}${id}?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`,
     { method: "GET" }
@@ -87,51 +87,32 @@ export const  getMovie = (id: number, language?: string ) => {
     });
 };
 
+export const getUserData = (key: string) => {
+  return localStorage.getItem(key)
+    ? JSON.parse(localStorage.getItem(key) || "")
+    : [];
+};
+
 const checkAdding = (watched: number[], id: number): number[] => {
-  if (watched.find((item) => item == id)) {
-    watched = watched.filter((item) => item !== id);
-  } else {
-    watched.push(id);
-  }
+  watched.indexOf(id) >= 0
+    ? (watched = watched.filter((item) => item !== id))
+    : watched.push(id);
   return watched;
 };
 
 export const addWatched = (id: number) => {
-  if (localStorage.getItem("watchedMovies") === null) {
-    localStorage.setItem("watchedMovies", JSON.stringify([id]));
-  } else {
-    let watched: number[] = JSON.parse(
-      localStorage.getItem("watchedMovies") || ""
-    );
-    localStorage.setItem(
-      "watchedMovies",
-      JSON.stringify(checkAdding(watched, id))
-    );
-  }
+  const watched = getUserData("watchedMovies");
+  localStorage.setItem(
+    "watchedMovies",
+    JSON.stringify(checkAdding(watched, id))
+  );
 };
 
 export const deleteFavorite = (id: number) => {
-  let remove = JSON.parse(localStorage.getItem("userMoviesIDs") || "");
-  remove = remove.filter((item: number) => item !== id);
-  localStorage.setItem("userMoviesIDs", JSON.stringify(remove));
+  localStorage.setItem(
+    "userMoviesIDs",
+    JSON.stringify(
+      getUserData("userMoviesIDs").filter((item: number) => item !== id)
+    )
+  );
 };
-
-export interface IGenre {
-  id: number;
-  name: string;
-  isChecked: boolean;
-}
-
-export interface IMovie {
-  id: number;
-  title: string;
-  poster_path: string;
-  overview: string;
-  isWatched?: boolean;
-}
-
-export interface IFavoriteMovieProps {
-  favoriteMovies: IMovie[];
-  handleIsWatched: (index: number, id: number) => void;
-  handleDeleteMovie: (id: number) => void;
-}

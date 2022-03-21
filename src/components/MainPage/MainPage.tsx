@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import GenresSelection from "./components/GenresSelection/GenresSelection";
-import { LogOutButton, AddButton } from "./assets/MainPageStyledComponents";
+import {
+  LogOutButton,
+  AddButton,
+  MainPageWrapper,
+  LogOutWrapper,
+  ButtonsWrapper,
+} from "./assets/MainPageStyledComponents";
 import block from "./assets/blocks.png";
 import list from "./assets/list.png";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import FavoriteMovies from "./components/FavoriteMovies/FavoriteMovies";
-import { IGenre } from "../../Utils";
+import { IGenre } from "../../types/genresSelection";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -25,17 +31,17 @@ const MainPage = () => {
   };
 
   return (
-    <div className='mx-10'>
-      <div className='flex justify-end'>
+    <MainPageWrapper>
+      <LogOutWrapper>
         {t("main.hello")}, {user}!
         <LogOutButton onClick={LogOut}>{t("main.logout")}</LogOutButton>
-      </div>
+      </LogOutWrapper>
       <p className='m-5'>{t("main.genres")}</p>
       <div>
         <div>
           <GenresSelection genres={genres} setGenres={setGenres} />
         </div>
-        <div className='flex justify-end'>
+        <ButtonsWrapper>
           <AddButton onClick={AddMovie}>{t("main.add")}</AddButton>
           <button onClick={() => setView(true)}>
             <img src={block} className='w-8 mx-3' />
@@ -43,10 +49,10 @@ const MainPage = () => {
           <button onClick={() => setView(false)}>
             <img src={list} className='w-8 mx-3' />
           </button>
-        </div>
+        </ButtonsWrapper>
         <FavoriteMovies isBlockView={isBlockView} />
       </div>
-    </div>
+    </MainPageWrapper>
   );
 };
 

@@ -1,50 +1,33 @@
 import React, { useEffect, useState } from "react";
 import i18n from "../../../../i18n";
 import {
-  IMovie,
   addWatched,
   getMovie,
   deleteFavorite,
+  getUserData,
 } from "../../../../Utils";
+import { IMovie, IFavoriteMovies } from "../../../../types/favoriteMovies";
 import FavoriteMovieBlock from "./components/FavoriteMovieBlock";
 import FavoriteMovieList from "./components/FavoriteMovieList";
 
-interface IFavoriteMovies {
-  isBlockView: boolean;
-}
-
 const FavoriteMovies: React.FC<IFavoriteMovies> = ({ isBlockView }) => {
   const [favoriteMovies, setFavoriteMovies] = useState<IMovie[]>([]);
-  const [userMoviesIDs, setUserIDs] = useState<number[]>([]);
 
   useEffect(() => {
-    if (localStorage.getItem("userMoviesIDs") !== null) {
-      setUserIDs(JSON.parse(localStorage.getItem("userMoviesIDs") || ""));
-    }
+    const watched = getUserData("watchedMovies");
+    getUserData("userMoviesIDs").map((id: number) =>
+      getMovie(id, i18n.language).then((movie: IMovie) => {
+        setFavoriteMovies((prev) =>
+          prev.concat({
+            ...movie,
+            ...{
+              isWatched: watched.indexOf(movie.id) >= 0 ? true : false,
+            },
+          })
+        );
+      })
+    );
   }, []);
-
-  useEffect(() => {
-    let watched: [] = [];
-    if (localStorage.getItem("userMoviesIDs") !== null) {
-      if (localStorage.getItem("watchedMovies") !== null) {
-        watched = JSON.parse(localStorage.getItem("watchedMovies") || "");
-      }
-      userMoviesIDs.map((id) =>
-        getMovie(id, i18n.language).then((movie: IMovie) => {
-          setFavoriteMovies((prev) =>
-            prev.concat({
-              ...movie,
-              ...{
-                isWatched: watched.find((item: number) => item === movie.id)
-                  ? true
-                  : false,
-              },
-            })
-          );
-        })
-      );
-    }
-  }, [userMoviesIDs]);
 
   const handleDeleteMovie = (id: number) => {
     deleteFavorite(id);

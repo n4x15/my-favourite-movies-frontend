@@ -1,22 +1,15 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import {HeaderWrapper} from "./assets/styles"
 
 const Header = () => {
   const [t, i18n] = useTranslation();
   const navigate = useNavigate();
-  const Header = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 1.5em;
-  `;
-
+  
   return (
-    <div>
-      <Header onClick={() => navigate("/MainPage")}>{t("main.header")}</Header>
+    <HeaderWrapper>
+      <h1 onClick={() => navigate("/MainPage")}>{t("main.header")}</h1>
       <select
         defaultValue='ru-RU'
         onChange={(e) => {
@@ -26,7 +19,7 @@ const Header = () => {
         <option value='en-US'>EN</option>
         <option value='ru-RU'>RU</option>
       </select>
-    </div>
+    </HeaderWrapper>
   );
 };
 
