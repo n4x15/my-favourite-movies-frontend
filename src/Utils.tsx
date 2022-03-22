@@ -1,4 +1,4 @@
-import { moviesUrl, genresUrl } from "./Urls";
+import { moviesUrl, genresUrl, movieUrl } from "./Urls";
 
 const accounts = {
   admin: "JfzSTg",
@@ -7,8 +7,8 @@ const accounts = {
   third: "0ZVGyB",
 };
 export const initAccounts = () => {
-    localStorage.setItem('accounts', JSON.stringify(accounts));
-}
+  localStorage.setItem("accounts", JSON.stringify(accounts));
+};
 
 export const checkPassword = (login: any, password: string) => {
   let users = localStorage.getItem("accounts");
@@ -69,4 +69,50 @@ export const getMovies = (filters: GetMoviesArgs) => {
     .catch(() => {
       return {};
     });
-};  
+};
+
+export const getMovie = (id: number, language?: string) => {
+  return fetch(
+    `${movieUrl}${id}?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`,
+    { method: "GET" }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch(() => {
+      return {};
+    });
+};
+
+export const getUserData = (key: string) => {
+  return localStorage.getItem(key)
+    ? JSON.parse(localStorage.getItem(key) || "")
+    : [];
+};
+
+const checkAdding = (watched: number[], id: number): number[] => {
+  watched.indexOf(id) >= 0
+    ? (watched = watched.filter((item) => item !== id))
+    : watched.push(id);
+  return watched;
+};
+
+export const addWatched = (id: number) => {
+  const watched = getUserData("watchedMovies");
+  localStorage.setItem(
+    "watchedMovies",
+    JSON.stringify(checkAdding(watched, id))
+  );
+};
+
+export const deleteFavorite = (id: number) => {
+  localStorage.setItem(
+    "userMoviesIDs",
+    JSON.stringify(
+      getUserData("userMoviesIDs").filter((item: number) => item !== id)
+    )
+  );
+};

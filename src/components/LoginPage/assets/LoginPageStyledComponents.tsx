@@ -11,6 +11,10 @@ export const LoginForm = styled.form`
 `;
 export const FormWrapper = styled.div`
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 `;
 export const Label = styled.p`
   margin: 0.5rem;
