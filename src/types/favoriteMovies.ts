@@ -4,6 +4,7 @@ export interface IMovie {
     poster_path: string;
     overview: string;
     isWatched?: boolean;
+    isSaved?: boolean;
   }
   
 export interface IFavoriteMovieProps {
