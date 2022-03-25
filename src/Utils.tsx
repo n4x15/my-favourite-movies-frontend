@@ -41,7 +41,7 @@ export const getGenres = (language: string) => {
 
 interface GetMoviesArgs {
   language?: string;
-  with_genres?: string;
+  genresId?: number[];
   without_genres?: string;
   year?: number;
   rating?: number;
@@ -51,6 +51,7 @@ const mapArgsToApi = (filters: GetMoviesArgs): string =>
   Object.entries({
     api_key: process.env.REACT_APP_API_KEY,
     ...filters,
+    ...(filters.genresId ? { "with_genres": `${filters.genresId}` } : {}),
     ...(filters.rating ? { "vote_average.gte": `${filters.rating}` } : {}),
     page: 1,
   })
@@ -115,4 +116,14 @@ export const deleteFavorite = (id: number) => {
       getUserData("userMoviesIDs").filter((item: number) => item !== id)
     )
   );
+};
+
+export const addGenres = (id: number) => {
+  const genres = getUserData("genresId");
+  localStorage.setItem("genresId", JSON.stringify(checkAdding(genres, id)));
+};
+
+export const saveMovie = (id: number) => {
+  const movie = getUserData("userMoviesIDs");
+  localStorage.setItem("userMoviesIDs", JSON.stringify(checkAdding(movie, id)));
 };

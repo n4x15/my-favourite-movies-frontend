@@ -1,47 +1,46 @@
 import React from "react";
+import { IMovie, IFavoriteMovieProps } from "src/types/favoriteMovies";
+import { posterUrl } from "src/Urls";
 import {
-  IMovie,
-  IFavoriteMovieProps,
-} from "../../../../../types/favoriteMovies";
-import { posterUrl } from "../../../../../Urls";
-import {
-  MovieWrapperBlock,
-  MoviePresentBlock,
   Title,
   ContentWrapperBlock,
   Overview,
+  FavoriteMovieCard,
 } from "../assets/styles";
-import checkmark from "../../../assets/checkmark.svg";
-import cross from "../../../assets/cross.svg";
+import checkmark from "src/components/MainPage/assets/checkmark.svg";
+import cross from "src/components/MainPage/assets/cross.svg";
+import { MoviesWrapper } from "src/components/AddPage/components/MoviesBlock/assets/styles";
 
 const FavoriteMovieBlock: React.FC<IFavoriteMovieProps> = ({
   favoriteMovies,
   handleIsWatched,
   handleDeleteMovie,
+  isBlockView,
 }) => {
   return (
-    <MovieWrapperBlock>
+    <MoviesWrapper isBlockView={isBlockView}>
       {favoriteMovies.map((movie: IMovie, index: number) => {
         return (
-          <MoviePresentBlock
+          <FavoriteMovieCard
             key={movie.id}
-            isWatched={movie.isWatched ? true : false}
+            isWatched={movie.isWatched}
+            isBlockView={isBlockView}
           >
             <Title>{movie.title}</Title>
+            <img src={posterUrl + movie.poster_path} alt={movie.title} />
+            <Overview>{movie.overview}</Overview>
             <ContentWrapperBlock>
-              <img src={posterUrl + movie.poster_path} alt={movie.title} />
-              <button onClick={() => handleIsWatched(index, movie.id)}>
+              <button onClick={() => handleIsWatched(movie.id)}>
                 <img src={checkmark} />
               </button>
               <button onClick={() => handleDeleteMovie(movie.id)}>
                 <img src={cross} />
               </button>
             </ContentWrapperBlock>
-            <Overview>{movie.overview}</Overview>
-          </MoviePresentBlock>
+          </FavoriteMovieCard>
         );
       })}
-    </MovieWrapperBlock>
+    </MoviesWrapper>
   );
 };
 

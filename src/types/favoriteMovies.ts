@@ -4,12 +4,14 @@ export interface IMovie {
     poster_path: string;
     overview: string;
     isWatched?: boolean;
+    isSaved?: boolean;
   }
   
 export interface IFavoriteMovieProps {
     favoriteMovies: IMovie[];
-    handleIsWatched: (index: number, id: number) => void;
+    handleIsWatched: (id: number) => void;
     handleDeleteMovie: (id: number) => void;
+    isBlockView: boolean
   }
   
   export interface IFavoriteMovies {

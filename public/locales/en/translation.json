@@ -11,6 +11,9 @@
     "hello": "Hello",
     "genres": "Select your favorites genres",
     "logout": "Logout",
-    "add": "Add"
+    "add": "Add",
+    "save": "Save",
+    "year": "Year",
+    "rating": "Rating"
   }
 }

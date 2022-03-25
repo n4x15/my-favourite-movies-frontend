@@ -8,7 +8,6 @@ import {
 } from "../../../../Utils";
 import { IMovie, IFavoriteMovies } from "../../../../types/favoriteMovies";
 import FavoriteMovieBlock from "./components/FavoriteMovieBlock";
-import FavoriteMovieList from "./components/FavoriteMovieList";
 
 const FavoriteMovies: React.FC<IFavoriteMovies> = ({ isBlockView }) => {
   const [favoriteMovies, setFavoriteMovies] = useState<IMovie[]>([]);
@@ -34,28 +33,21 @@ const FavoriteMovies: React.FC<IFavoriteMovies> = ({ isBlockView }) => {
     setFavoriteMovies(favoriteMovies.filter((item) => item.id !== id));
   };
 
-  const handleIsWatched = (index: number, id: number) => {
+  const handleIsWatched = (id: number) => {
     addWatched(id);
-    favoriteMovies[index].isWatched = !favoriteMovies[index].isWatched;
+    favoriteMovies.map((movie: IMovie) =>
+      movie.id === id && (movie.isWatched = !movie.isWatched)
+    );
     setFavoriteMovies([...favoriteMovies]);
   };
 
   return (
-    <div>
-      {isBlockView ? (
-        <FavoriteMovieBlock
-          favoriteMovies={favoriteMovies}
-          handleIsWatched={handleIsWatched}
-          handleDeleteMovie={handleDeleteMovie}
-        />
-      ) : (
-        <FavoriteMovieList
-          favoriteMovies={favoriteMovies}
-          handleIsWatched={handleIsWatched}
-          handleDeleteMovie={handleDeleteMovie}
-        />
-      )}
-    </div>
+    <FavoriteMovieBlock
+      favoriteMovies={favoriteMovies}
+      handleIsWatched={handleIsWatched}
+      handleDeleteMovie={handleDeleteMovie}
+      isBlockView={isBlockView}
+    />
   );
 };
 
