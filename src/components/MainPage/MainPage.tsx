@@ -28,7 +28,7 @@ const MainPage = () => {
   };
 
   const AddMovie = () => {
-    navigate("/add_movie_page");
+    navigate("/add-movie-page");
   };
 
   return (

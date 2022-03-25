@@ -22,9 +22,9 @@ export const useGenres = () => {
     setGenresId(getUserData("genresId"));
   }, [genres]);
 
-  const handleGenres = (index: number, id: number) => {
+  const handleGenres = (id: number) => {
     addGenres(id)
-    genres[index].isChecked = !genres[index].isChecked;
+    genres.map((genre:IGenre) => genre.id === id && (genre.isChecked=!genre.isChecked))
     setGenres([...genres]);
     localStorage.setItem("userGenres", JSON.stringify(genres));
 };

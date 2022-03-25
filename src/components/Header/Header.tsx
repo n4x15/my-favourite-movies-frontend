@@ -9,7 +9,7 @@ const Header = () => {
   
   return (
     <HeaderWrapper>
-      <h1 onClick={() => navigate("/main_page")}>{t("main.header")}</h1>
+      <h1 onClick={() => navigate("/main-page")}>{t("main.header")}</h1>
       <select
         defaultValue='ru-RU'
         onChange={(e) => {

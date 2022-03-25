@@ -36,7 +36,7 @@ const FavoriteMovies: React.FC<IFavoriteMovies> = ({ isBlockView }) => {
   const handleIsWatched = (id: number) => {
     addWatched(id);
     favoriteMovies.map((movie: IMovie) =>
-      movie.id === id ? (movie.isWatched = !movie.isWatched) : false
+      movie.id === id && (movie.isWatched = !movie.isWatched)
     );
     setFavoriteMovies([...favoriteMovies]);
   };

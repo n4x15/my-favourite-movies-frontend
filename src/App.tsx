@@ -8,16 +8,14 @@ import { initAccounts } from "./Utils";
 import AddMoviePage from "./components/AddPage/AddMoviePage";
 
 function App() {
-  const [isBlockView, setView] = useState<boolean>(true);
-
   initAccounts();
   return (
     <BrowserRouter>
       <Header />
       <Routes>
         <Route path='/' element={<LoginPage />} />
-        <Route path='/main_page' element={<MainPage />} />
-        <Route path='/add_movie_page' element={<AddMoviePage />} />
+        <Route path='/main-page' element={<MainPage />} />
+        <Route path='/add-movie-page' element={<AddMoviePage />} />
         <Route path='*' element={<h1>Nothing to do here</h1>} />
       </Routes>
     </BrowserRouter>

@@ -39,7 +39,7 @@ const AddMoviePage = () => {
   const handleSaveMovies = (id: number) => {
     saveMovie(id);
     movies.map((movie: IMovie) =>
-      movie.id === id ? (movie.isSaved = !movie.isSaved) : false
+      movie.id === id && (movie.isSaved = !movie.isSaved) 
     );
     setMovies([...movies]);
   };

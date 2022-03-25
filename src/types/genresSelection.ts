@@ -11,5 +11,5 @@ export interface IGenreProps {
   
 export interface IGenreListProps {
     genres: IGenre[];
-    handleGenres: (index: number, id:number) => void;
+    handleGenres: (id:number) => void;
   }
