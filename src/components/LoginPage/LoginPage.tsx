@@ -15,7 +15,7 @@ const LoginPage = () => {
   const { t, i18n } = useTranslation();
 
  const onSubmit = (input: {login: string, password: string}) => {
-    return checkPassword(input.login, input.password) ?  navigate("/MainPage") : {[FORM_ERROR]: t("auth.incorrectUser")};
+    return checkPassword(input.login, input.password) ?  navigate("/main_page") : {[FORM_ERROR]: t("auth.incorrectUser")};
     }
 
   return (  

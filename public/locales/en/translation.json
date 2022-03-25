@@ -12,6 +12,8 @@
     "genres": "Select your favorites genres",
     "logout": "Logout",
     "add": "Add",
-    "save": "Save"
+    "save": "Save",
+    "year": "Year",
+    "rating": "Rating"
   }
 }

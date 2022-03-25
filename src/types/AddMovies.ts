@@ -1,22 +1,14 @@
 import { IMovie } from "./favoriteMovies";
-import { IGenre } from "./genresSelection";
-
-export interface  AddMoviesProps  {
-  genres: IGenre[];
-  setGenres: (value: IGenre[]) => void;
-  with_genres: number[];
-  isBlockView: boolean;
-  setView: (value: boolean) => void;
-  }
 
 export interface MoviesProps {
   movies: IMovie[];
-  handleClick: (index:number, id:number) => void;
+  handleClick: (id:number) => void;
+  isBlockView: boolean
 }
 
 export interface IRatingSelectorProps {
   rating: number;
-  handleChange: (value: any) => void;
+  handleChange: (value: number) => void;
 }
 
 export interface IYearProps {

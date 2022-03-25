@@ -9,7 +9,7 @@ const GenresList: React.FC<IGenreListProps> = ({ genres, handleGenres }) => {
         return (
           <GenreCard
             key={genre.id}
-            isChecked={genre.isChecked ? true : false}
+            isChecked={genre.isChecked}
             onClick={() => handleGenres(index, genre.id)}
           >
             {genre.name}

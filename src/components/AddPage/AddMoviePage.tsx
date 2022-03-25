@@ -1,37 +1,33 @@
 import React, { useEffect, useState } from "react";
-import RatingSelector from "./components/RatingSelector";
+import RatingSelector from "./components/RatingSelector/RatingSelector";
 import GenresSelection from "../MainPage/components/GenresSelection/GenresSelection";
-import YearSelector from "./components/YearSelector";
-import MoviesBlock from "./components/MoviesList/MoviesBlock";
-import MoviesList from "./components/MoviesList/MoviesList";
-import { AddMoviesProps } from "../../types/AddMovies";
+import YearSelector from "./components/YearSelector/YearSelector";
+import MoviesBlock from "./components/MoviesBlock/MoviesBlock";
 import { IMovie } from "../../types/favoriteMovies";
 import { getMovies, getUserData, saveMovie } from "../../Utils";
 import { ButtonsWrapper } from "../MainPage/assets/MainPageStyledComponents";
 import block from "../MainPage/assets/blocks.png";
 import list from "../MainPage/assets/list.png";
 import { FiltersWrapper, SelectorsWrapper } from "./assets/styles";
+import { useBlockView } from "../../hooks/useBlockView";
+import { useGenres } from "../../hooks/useGenres";
 
-const AddMoviePage: React.FC<AddMoviesProps> = ({
-  genres,
-  setGenres,
-  with_genres,
-  isBlockView,
-  setView,
-}) => {
+const AddMoviePage = () => {
   const [year, setYear] = useState<number>(2010);
   const [rating, setRating] = useState<number>(5);
   const [movies, setMovies] = useState<IMovie[]>([]);
+  const { isBlockView, changeBlockView } = useBlockView();
+  const { genres, handleGenres, genresId } = useGenres();
 
   useEffect(() => {
     const saved = getUserData("userMoviesIDs");
-    getMovies({ with_genres, rating, year }).then((movies) => {
+    getMovies({ genresId, rating, year }).then((movies) => {
       movies.map(
         (movie: IMovie) => (movie.isSaved = saved.indexOf(movie.id) >= 0)
       );
       setMovies(movies);
     });
-  }, [year, rating, with_genres]);
+  }, [year, rating, genresId]);
 
   const handleChangeSelect = (year: string) => {
     setYear(Number(year));
@@ -40,36 +36,36 @@ const AddMoviePage: React.FC<AddMoviesProps> = ({
     setRating(rating);
   };
 
-  const handleSaveMovies = (index: number, id: number) => {
+  const handleSaveMovies = (id: number) => {
     saveMovie(id);
-    movies[index].isSaved = !movies[index].isSaved;
+    movies.map((movie: IMovie) =>
+      movie.id === id ? (movie.isSaved = !movie.isSaved) : false
+    );
     setMovies([...movies]);
   };
 
   return (
     <div>
       <FiltersWrapper>
-        <GenresSelection genres={genres} setGenres={setGenres} />
+        <GenresSelection genres={genres} handleGenres={handleGenres} />
         <SelectorsWrapper>
           <RatingSelector rating={rating} handleChange={handleChangeRating} />
           <YearSelector year={year} handleChange={handleChangeSelect} />
         </SelectorsWrapper>
       </FiltersWrapper>
       <ButtonsWrapper>
-        <button onClick={() => setView(true)}>
+        <button onClick={() => changeBlockView(true)}>
           <img src={block} className='w-8 mx-3' />
         </button>
-        <button onClick={() => setView(false)}>
+        <button onClick={() => changeBlockView(false)}>
           <img src={list} className='w-8 mx-3' />
         </button>
       </ButtonsWrapper>
-      <div>
-        {isBlockView ? (
-          <MoviesBlock movies={movies} handleClick={handleSaveMovies} />
-        ) : (
-          <MoviesList movies={movies} handleClick={handleSaveMovies} />
-        )}
-      </div>
+      <MoviesBlock
+        movies={movies}
+        handleClick={handleSaveMovies}
+        isBlockView={isBlockView}
+      />
     </div>
   );
 };

@@ -1,20 +1,11 @@
 import React from "react";
-import { getGenres, getUserData, addGenres } from "../../../../Utils";
-import { IGenre, IGenreProps } from "../../../../types/genresSelection";
-import { useEffect } from "react";
+import { IGenreListProps } from "src/types/genresSelection";
 import GenresList from "./components/GenresList";
-import i18n from "../../../../i18n";
 
-const GenresSelection: React.FC<IGenreProps> = ({ genres, setGenres }) => {
-
-
-  const handleGenres = (index: number, id: number) => {
-    addGenres(id)
-    genres[index].isChecked = !genres[index].isChecked;
-    setGenres([...genres]);
-    localStorage.setItem("userGenres", JSON.stringify(genres));
-  };
-
+const GenresSelection: React.FC<IGenreListProps> = ({
+  genres,
+  handleGenres,
+}) => {
   return (
     <div>
       <GenresList genres={genres} handleGenres={handleGenres} />

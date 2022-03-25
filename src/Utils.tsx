@@ -41,7 +41,7 @@ export const getGenres = (language: string) => {
 
 interface GetMoviesArgs {
   language?: string;
-  with_genres?: number[];
+  genresId?: number[];
   without_genres?: string;
   year?: number;
   rating?: number;
@@ -51,6 +51,7 @@ const mapArgsToApi = (filters: GetMoviesArgs): string =>
   Object.entries({
     api_key: process.env.REACT_APP_API_KEY,
     ...filters,
+    ...(filters.genresId ? { "with_genres": `${filters.genresId}` } : {}),
     ...(filters.rating ? { "vote_average.gte": `${filters.rating}` } : {}),
     page: 1,
   })
