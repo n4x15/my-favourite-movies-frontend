@@ -22,8 +22,12 @@ const MoviesBlock: React.FC<MoviesProps> = ({
         return (
           <MovieCard isBlockView={isBlockView} key={movie.id}>
             <Title>{movie.title}</Title>
-            <img src={posterUrl + movie.poster_path} alt={movie.title} />
-            <Overview>{movie.overview}</Overview>
+            <img src={posterUrl + movie.posterPath} alt={movie.title} />
+            <Overview>
+              {movie.overview.length > 300
+                ? movie.overview.substring(0, 300) + "..."
+                : movie.overview}
+            </Overview>
             <SaveButton
               disabled={movie.isSaved}
               onClick={() => handleClick(movie.id)}

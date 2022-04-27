@@ -6,6 +6,7 @@ import MainPage from "./components/MainPage/MainPage";
 import Header from "./components/Header/Header";
 import { initAccounts } from "./Utils";
 import AddMoviePage from "./components/AddPage/AddMoviePage";
+import PrivateRoute from "./components/PrivateRouter/privateRouter";
 
 function App() {
   initAccounts();
@@ -14,8 +15,22 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<LoginPage />} />
-        <Route path='/main-page' element={<MainPage />} />
-        <Route path='/add-movie-page' element={<AddMoviePage />} />
+        <Route
+          path='/main-page'
+          element={
+            <PrivateRoute>
+              <MainPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/add-movie-page'
+          element={
+            <PrivateRoute>
+              <AddMoviePage />
+            </PrivateRoute>
+          }
+        />
         <Route path='*' element={<h1>Nothing to do here</h1>} />
       </Routes>
     </BrowserRouter>

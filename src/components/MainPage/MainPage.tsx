@@ -20,7 +20,7 @@ const MainPage = () => {
   const [t, i18n] = useTranslation();
   const { isBlockView, changeBlockView } = useBlockView();
   const user = localStorage.getItem("currentUser");
-  const { genres, handleGenres } = useGenres();
+  const { genres, handleGenres, genresId} = useGenres();
 
   const LogOut = () => {
     localStorage.clear();
@@ -40,7 +40,7 @@ const MainPage = () => {
       <p className='m-5'>{t("main.genres")}</p>
       <div>
         <div>
-          <GenresSelection genres={genres} handleGenres={handleGenres} />
+          <GenresSelection genres={genres} handleGenres={handleGenres} genresId={genresId}/>
         </div>
         <ButtonsWrapper>
           <AddButton onClick={AddMovie}>{t("main.add")}</AddButton>

@@ -1,20 +1,19 @@
 export interface IMovie {
-    id: number;
-    title: string;
-    poster_path: string;
-    overview: string;
-    isWatched?: boolean;
-    isSaved?: boolean;
-  }
-  
+  id: number;
+  title: string;
+  posterPath: string;
+  overview: string;
+  isWatched?: boolean;
+  isSaved?: boolean;
+}
+
 export interface IFavoriteMovieProps {
-    favoriteMovies: IMovie[];
-    handleIsWatched: (id: number) => void;
-    handleDeleteMovie: (id: number) => void;
-    isBlockView: boolean
-  }
-  
-  export interface IFavoriteMovies {
-    isBlockView: boolean;
-  }
-  
+  favoriteMovies: IMovie[];
+  handleIsWatched: (id: number) => void;
+  handleDeleteMovie: (id: number) => void;
+  isBlockView: boolean;
+}
+
+export interface IFavoriteMovies {
+  isBlockView: boolean;
+}

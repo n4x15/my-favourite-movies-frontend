@@ -7,20 +7,30 @@ import { Form } from "react-final-form";
 import { LoginForm, FormWrapper, Label, ErrLabel } from "./assets/LoginPageStyledComponents";
 import { FORM_ERROR } from "final-form";
 import LoginField from "./components/LoginField";
-import LoginHeader from "./components/LoginHeader";
-import {checkPassword} from "../../Utils"
+import { useMutation } from "@apollo/client";
+import { LOG_IN } from "src/graphql/mutation/graphql.mutation";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const [auth] = useMutation(LOG_IN, {
+    onCompleted: (data) =>
+      localStorage.setItem("userToken", data.logIn.accessToken),
+      onError: (error) => error,
+  });
 
- const onSubmit = (input: {login: string, password: string}) => {
-    return checkPassword(input.login, input.password) ?  navigate("/main_page") : {[FORM_ERROR]: t("auth.incorrectUser")};
-    }
+  const onSubmit = async (input: { login: string; password: string }) => {
+    const authentication = await auth({
+      variables: { login: input.login, password: input.password },
+    });
+    return !authentication.errors
+      ? (navigate("/main-page"),
+        localStorage.setItem("currentUser", input.login))
+      : { [FORM_ERROR]: t("auth.incorrectUser") };
+  };
 
-  return (  
- <FormWrapper>
- <LoginHeader/>
+  return (
+    <FormWrapper>
       <Form
         onSubmit={onSubmit}
         validate={(values) => {

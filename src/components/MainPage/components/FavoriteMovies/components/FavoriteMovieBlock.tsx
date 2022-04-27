@@ -10,6 +10,7 @@ import {
 import checkmark from "src/components/MainPage/assets/checkmark.svg";
 import cross from "src/components/MainPage/assets/cross.svg";
 import { MoviesWrapper } from "src/components/AddPage/components/MoviesBlock/assets/styles";
+import { CircularProgress } from "@mui/material";
 
 const FavoriteMovieBlock: React.FC<IFavoriteMovieProps> = ({
   favoriteMovies,
@@ -27,8 +28,12 @@ const FavoriteMovieBlock: React.FC<IFavoriteMovieProps> = ({
             isBlockView={isBlockView}
           >
             <Title>{movie.title}</Title>
-            <img src={posterUrl + movie.poster_path} alt={movie.title} />
-            <Overview>{movie.overview}</Overview>
+            <img src={posterUrl + movie.posterPath} alt={movie.title} />
+            <Overview>
+              {movie.overview.length > 300
+                ? movie.overview.substring(0, 300) + "..."
+                : movie.overview}
+            </Overview>
             <ContentWrapperBlock>
               <button onClick={() => handleIsWatched(movie.id)}>
                 <img src={checkmark} />
