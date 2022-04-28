@@ -5,10 +5,11 @@ import GenresList from "./components/GenresList";
 const GenresSelection: React.FC<IGenreListProps> = ({
   genres,
   handleGenres,
+  genresId
 }) => {
   return (
     <div>
-      <GenresList genres={genres} handleGenres={handleGenres} />
+      <GenresList genres={genres} handleGenres={handleGenres} genresId={genresId} />
     </div>
   );
 };

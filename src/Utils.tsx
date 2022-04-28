@@ -39,7 +39,7 @@ export const getGenres = (language: string) => {
     });
 };
 
-interface GetMoviesArgs {
+export interface GetMoviesArgs {
   language?: string;
   genresId?: number[];
   without_genres?: string;

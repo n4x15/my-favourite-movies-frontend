@@ -1,53 +1,53 @@
 import React, { useEffect, useState } from "react";
 import i18n from "../../../../i18n";
-import {
-  addWatched,
-  getMovie,
-  deleteFavorite,
-  getUserData,
-} from "../../../../Utils";
 import { IMovie, IFavoriteMovies } from "../../../../types/favoriteMovies";
 import FavoriteMovieBlock from "./components/FavoriteMovieBlock";
+import { GET_USER_MOVIES } from "src/graphql/query/graphql.query";
+import { useMutation, useQuery } from "@apollo/client";
+import {
+  REMOVE_MOVIE,
+  SET_WATCHED,
+} from "src/graphql/mutation/graphql.mutation";
+import { CircularProgress } from "@mui/material";
 
 const FavoriteMovies: React.FC<IFavoriteMovies> = ({ isBlockView }) => {
   const [favoriteMovies, setFavoriteMovies] = useState<IMovie[]>([]);
+  const { loading, refetch } = useQuery(GET_USER_MOVIES, {
+    onCompleted: (data) => setFavoriteMovies(data.getUserMovies),
+    notifyOnNetworkStatusChange: true,
+  });
+  const [removeMovie] = useMutation(REMOVE_MOVIE, {
+    refetchQueries: [GET_USER_MOVIES],
+  });
+  const [setWatched] = useMutation(SET_WATCHED, {
+    refetchQueries: [GET_USER_MOVIES],
+  });
 
   useEffect(() => {
-    const watched = getUserData("watchedMovies");
-    getUserData("userMoviesIDs").map((id: number) =>
-      getMovie(id, i18n.language).then((movie: IMovie) => {
-        setFavoriteMovies((prev) =>
-          prev.concat({
-            ...movie,
-            ...{
-              isWatched: watched.indexOf(movie.id) >= 0,
-            },
-          })
-        );
-      })
-    );
+    refetch();
   }, []);
 
   const handleDeleteMovie = (id: number) => {
-    deleteFavorite(id);
-    setFavoriteMovies(favoriteMovies.filter((item) => item.id !== id));
+    removeMovie({ variables: { removeMovieId: id } });
   };
 
   const handleIsWatched = (id: number) => {
-    addWatched(id);
-    favoriteMovies.map((movie: IMovie) =>
-      movie.id === id && (movie.isWatched = !movie.isWatched)
-    );
-    setFavoriteMovies([...favoriteMovies]);
+    setWatched({ variables: { setWatchedId: id } });
   };
 
   return (
-    <FavoriteMovieBlock
-      favoriteMovies={favoriteMovies}
-      handleIsWatched={handleIsWatched}
-      handleDeleteMovie={handleDeleteMovie}
-      isBlockView={isBlockView}
-    />
+    <div>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <FavoriteMovieBlock
+          favoriteMovies={favoriteMovies}
+          handleIsWatched={handleIsWatched}
+          handleDeleteMovie={handleDeleteMovie}
+          isBlockView={isBlockView}
+        />
+      )}
+    </div>
   );
 };
 

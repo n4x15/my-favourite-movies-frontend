@@ -11,18 +11,21 @@ import {
   useQuery,
   gql,
 } from "@apollo/client";
+import { urlToGql } from "./graphql/config";
 
 const client = new ApolloClient({
-  uri: process.env.REACT_APP_URL_TO_GQL,
+  link: urlToGql,
   cache: new InMemoryCache(),
 });
 
 ReactDOM.render(
-  <Suspense fallback={<h1>Starting</h1>}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Suspense>,
+  <ApolloProvider client={client}>
+    <Suspense fallback={<h1>Starting</h1>}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </Suspense>
+  </ApolloProvider>,
   document.getElementById("root")
 );
 
