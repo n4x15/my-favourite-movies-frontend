@@ -4,9 +4,7 @@ export const Title = styled.h1`
 margin: 5px;
 font-size: x-large;
 `
-export const Overview = styled.span`
-margin: 10px;
-`
+
 export const ContentWrapperBlock = styled.div`
 display: flex;
 justify-content: start;

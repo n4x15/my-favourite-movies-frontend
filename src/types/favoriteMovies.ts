@@ -17,3 +17,7 @@ export interface IFavoriteMovieProps {
 export interface IFavoriteMovies {
   isBlockView: boolean;
 }
+
+export interface IOverviewProps {
+  overview: string;
+}
