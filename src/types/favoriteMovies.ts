@@ -12,6 +12,7 @@ export interface IFavoriteMovieProps {
   handleIsWatched: (id: number) => void;
   handleDeleteMovie: (id: number) => void;
   isBlockView: boolean;
+  moviesId: number[];
 }
 
 export interface IFavoriteMovies {

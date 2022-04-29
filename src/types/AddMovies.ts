@@ -4,6 +4,7 @@ export interface MoviesProps {
   movies: IMovie[];
   handleClick: (id:number) => void;
   isBlockView: boolean
+  moviesId: number[]
 }
 
 export interface IRatingSelectorProps {

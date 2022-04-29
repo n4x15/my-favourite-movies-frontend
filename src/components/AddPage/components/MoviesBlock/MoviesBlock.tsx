@@ -11,9 +11,9 @@ const MoviesBlock: React.FC<MoviesProps> = ({
   movies,
   handleClick,
   isBlockView,
+  moviesId,
 }) => {
   const [t, i18n] = useTranslation();
-
   return (
     <MoviesWrapper isBlockView={isBlockView}>
       {movies.map((movie: IMovie) => {
@@ -23,7 +23,7 @@ const MoviesBlock: React.FC<MoviesProps> = ({
             <img src={posterUrl + movie.posterPath} alt={movie.title} />
             <Overview overview={movie.overview} />
             <SaveButton
-              disabled={movie.isSaved}
+              disabled={moviesId.includes(movie.id) ? true : false}
               onClick={() => handleClick(movie.id)}
             >
               {t("main.save")}

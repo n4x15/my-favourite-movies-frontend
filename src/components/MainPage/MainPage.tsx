@@ -14,16 +14,19 @@ import { useTranslation } from "react-i18next";
 import FavoriteMovies from "./components/FavoriteMovies/FavoriteMovies";
 import { useBlockView } from "../../hooks/useBlockView";
 import { useGenres } from "../../hooks/useGenres";
+import { useApolloClient } from "@apollo/client";
 
 const MainPage = () => {
   const navigate = useNavigate();
   const [t, i18n] = useTranslation();
   const { isBlockView, changeBlockView } = useBlockView();
   const user = localStorage.getItem("currentUser");
-  const { genres, handleGenres, genresId} = useGenres();
+  const { genres, handleGenres, genresId } = useGenres();
+  const client = useApolloClient();
 
   const LogOut = () => {
     localStorage.clear();
+    client.clearStore();
     navigate("/", { replace: true });
   };
 
@@ -40,7 +43,11 @@ const MainPage = () => {
       <p className='m-5'>{t("main.genres")}</p>
       <div>
         <div>
-          <GenresSelection genres={genres} handleGenres={handleGenres} genresId={genresId}/>
+          <GenresSelection
+            genres={genres}
+            handleGenres={handleGenres}
+            genresId={genresId}
+          />
         </div>
         <ButtonsWrapper>
           <AddButton onClick={AddMovie}>{t("main.add")}</AddButton>
