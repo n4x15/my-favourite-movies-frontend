@@ -9,7 +9,12 @@ import {
   SET_WATCHED,
 } from "src/graphql/mutation/graphql.mutation";
 import { CircularProgress } from "@mui/material";
-import { addWatched, deleteFavorite, getUserData } from "src/Utils";
+import {
+  addWatched,
+  deleteFavorite,
+  getOrWriteFunction,
+  getUserData,
+} from "src/Utils";
 
 const FavoriteMovies: React.FC<IFavoriteMovies> = ({ isBlockView }) => {
   const [favoriteMovies, setFavoriteMovies] = useState<IMovie[]>([]);
@@ -27,16 +32,19 @@ const FavoriteMovies: React.FC<IFavoriteMovies> = ({ isBlockView }) => {
     setFavoriteMovies(favoriteMovies.filter((item) => item.id !== id));
   };
 
+  const getData = (data: []) => {
+    const moviesArray: number[] = [];
+    data.forEach(
+      (movie: IMovie) => movie.isWatched && moviesArray.push(movie.id)
+    );
+    return moviesArray;
+  };
+
   useEffect(() => {
     if (!loading) {
-      if (getUserData("watchedMovies").length === 0) {
-        const moviesArray: number[] = [];
-        data.getUserMovies.forEach(
-          (movie: IMovie) => movie.isWatched && moviesArray.push(movie.id)
-        );
-        localStorage.setItem("watchedMovies", JSON.stringify(moviesArray));
-        setMoviesId(moviesArray);
-      }
+      setMoviesId(
+        getOrWriteFunction("watchedMovies", getData, data.getUserMovies)
+      );
     }
   }, [data]);
 

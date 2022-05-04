@@ -4,7 +4,7 @@ import i18n from "../i18n";
 import { IGenre, IUserGenres } from "../types/genresSelection";
 import { GET_GENRES, GET_USER_GENRES } from "src/graphql/query/graphql.query";
 import { ADD_GENRES } from "src/graphql/mutation/graphql.mutation";
-import { addGenres, getUserData } from "src/Utils";
+import { addGenres, getOrWriteFunction, getUserData } from "src/Utils";
 
 export const useGenres = () => {
   const [genres, setGenres] = useState<IGenre[]>([]);
@@ -16,16 +16,15 @@ export const useGenres = () => {
   const { data, loading } = useQuery(GET_USER_GENRES);
   const [addGenre] = useMutation(ADD_GENRES, {});
 
+  const getData = (data: []) => {
+    const genresArray: number[] = [];
+    data.forEach((genre: IUserGenres) => genresArray.push(genre.genreId));
+    return genresArray;
+  };
+
   useEffect(() => {
     if (!loading) {
-      if (getUserData("genresId").length === 0) {
-        const genresArray: number[] = [];
-        data.getUserGenres.forEach((genre: IUserGenres) =>
-          genresArray.push(genre.genreId)
-        );
-        localStorage.setItem("genresId", JSON.stringify(genresArray));
-        setGenresId(genresArray);
-      }
+      setGenresId(getOrWriteFunction("genresId", getData, data.getUserGenres));
     }
   }, [data]);
 

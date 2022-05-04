@@ -15,7 +15,7 @@ import { MOVIES } from "src/graphql/query/graphql.query";
 import { ADD_MOVIE } from "src/graphql/mutation/graphql.mutation";
 import { CircularProgress, Pagination } from "@mui/material";
 import i18n from "src/i18n";
-import { getUserData, saveMovie } from "src/Utils";
+import { getOrWriteFunction, getUserData, saveMovie } from "src/Utils";
 
 const AddMoviePage = () => {
   const [year, setYear] = useState<number>(2010);
@@ -36,16 +36,19 @@ const AddMoviePage = () => {
   const [addMovie] = useMutation(ADD_MOVIE);
   const [moviesId, setMoviesId] = useState<number[]>([]);
 
+  const getData = (data: []) => {
+    const moviesArray: number[] = [];
+    data.forEach(
+      (movie: IMovie) => movie.isSaved && moviesArray.push(movie.id)
+    );
+    return moviesArray;
+  };
+
   useEffect(() => {
     if (!loading) {
-      if (getUserData("userMoviesIDs").length === 0) {
-        const moviesArray: number[] = [];
-        data.Movies.results.forEach(
-          (movie: IMovie) => movie.isSaved && moviesArray.push(movie.id)
-        );
-        localStorage.setItem("userMoviesIDs", JSON.stringify(moviesArray));
-        setMoviesId(moviesArray);
-      }
+      setMoviesId(
+        getOrWriteFunction("userMoviesIDs", getData, data.Movies.results)
+      );
     }
   }, [data]);
 
