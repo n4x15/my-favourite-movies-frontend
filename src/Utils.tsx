@@ -94,7 +94,7 @@ export const getUserData = (key: string) => {
     : [];
 };
 
-const checkAdding = (watched: number[], id: number): number[] => {
+export const checkAdding = (watched: number[], id: number): number[] => {
   watched.indexOf(id) >= 0
     ? (watched = watched.filter((item) => item !== id))
     : watched.push(id);

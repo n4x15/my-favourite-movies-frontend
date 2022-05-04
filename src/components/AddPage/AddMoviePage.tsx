@@ -15,17 +15,23 @@ import { MOVIES } from "src/graphql/query/graphql.query";
 import { ADD_MOVIE } from "src/graphql/mutation/graphql.mutation";
 import { CircularProgress, Pagination } from "@mui/material";
 import i18n from "src/i18n";
-import { getOrWriteFunction, getUserData, saveMovie } from "src/Utils";
+import {
+  addGenres,
+  checkAdding,
+  getOrWriteFunction,
+  getUserData,
+  saveMovie,
+} from "src/Utils";
 
 const AddMoviePage = () => {
   const [year, setYear] = useState<number>(2010);
   const [rating, setRating] = useState<number>(5);
   const [movies, setMovies] = useState<IMovie[]>([]);
   const { isBlockView, changeBlockView } = useBlockView();
-  const { genres, handleGenres, genresId } = useGenres();
+  const { genres, genresId, setGenresId } = useGenres();
   const [page, setPage] = useState<number>();
   const [pageCount, setPageCount] = useState<number>(1);
-  const { data, loading } = useQuery(MOVIES, {
+  const { data, loading, refetch } = useQuery(MOVIES, {
     variables: {
       filters: { year, rating, genresId, page, language: i18n.language },
     },
@@ -74,6 +80,15 @@ const AddMoviePage = () => {
   const handleChangePage = (page: number) => {
     setPage(page);
   };
+
+  const handleGenres = (id: number) => {
+    const genresArray = checkAdding(genresId, id);
+    setGenresId([...genresArray]);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [genresId]);
 
   return (
     <div>

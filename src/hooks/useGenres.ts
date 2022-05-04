@@ -34,11 +34,11 @@ export const useGenres = () => {
   }, []);
 
   const handleGenres = (id: number) => {
-    addGenre({ variables: { addGenresId: id } });
+    addGenre({ variables: { addGenresId: id } });   
     addGenres(id);
     const genresArray = getUserData("genresId");
     setGenresId(genresArray);
   };
 
-  return { genres, handleGenres, genresId, loading };
+  return { genres, handleGenres, genresId, loading, setGenresId };
 };
