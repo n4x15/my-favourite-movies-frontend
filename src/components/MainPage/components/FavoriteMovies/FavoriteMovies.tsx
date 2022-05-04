@@ -9,30 +9,56 @@ import {
   SET_WATCHED,
 } from "src/graphql/mutation/graphql.mutation";
 import { CircularProgress } from "@mui/material";
+import {
+  addWatched,
+  deleteFavorite,
+  getOrWriteFunction,
+  getUserData,
+} from "src/Utils";
 
 const FavoriteMovies: React.FC<IFavoriteMovies> = ({ isBlockView }) => {
   const [favoriteMovies, setFavoriteMovies] = useState<IMovie[]>([]);
-  const { loading, refetch } = useQuery(GET_USER_MOVIES, {
+  const { data, loading, refetch } = useQuery(GET_USER_MOVIES, {
+    variables: { language: i18n.language },
     onCompleted: (data) => setFavoriteMovies(data.getUserMovies),
-    notifyOnNetworkStatusChange: true,
   });
-  const [removeMovie] = useMutation(REMOVE_MOVIE, {
-    refetchQueries: [GET_USER_MOVIES],
-  });
-  const [setWatched] = useMutation(SET_WATCHED, {
-    refetchQueries: [GET_USER_MOVIES],
-  });
-
-  useEffect(() => {
-    refetch();
-  }, []);
+  const [removeMovie] = useMutation(REMOVE_MOVIE);
+  const [setWatched] = useMutation(SET_WATCHED);
+  const [moviesId, setMoviesId] = useState<number[]>([]);
 
   const handleDeleteMovie = (id: number) => {
     removeMovie({ variables: { removeMovieId: id } });
+    deleteFavorite(id);
+    setFavoriteMovies(favoriteMovies.filter((item) => item.id !== id));
   };
+
+  const getData = (data: []) => {
+    const moviesArray: number[] = [];
+    data.forEach(
+      (movie: IMovie) => movie.isWatched && moviesArray.push(movie.id)
+    );
+    return moviesArray;
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      setMoviesId(
+        getOrWriteFunction("watchedMovies", getData, data.getUserMovies)
+      );
+    }
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+    const moviesArray = getUserData("watchedMovies");
+    setMoviesId(moviesArray);
+  }, []);
 
   const handleIsWatched = (id: number) => {
     setWatched({ variables: { setWatchedId: id } });
+    addWatched(id);
+    const moviesArray = getUserData("watchedMovies");
+    setMoviesId(moviesArray);
   };
 
   return (
@@ -45,6 +71,7 @@ const FavoriteMovies: React.FC<IFavoriteMovies> = ({ isBlockView }) => {
           handleIsWatched={handleIsWatched}
           handleDeleteMovie={handleDeleteMovie}
           isBlockView={isBlockView}
+          moviesId={moviesId}
         />
       )}
     </div>

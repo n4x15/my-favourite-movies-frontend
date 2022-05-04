@@ -25,3 +25,6 @@ export const ErrLabel = styled(Label)`
   color: red;
   font-style: bold;
 `;
+export const ButtonWrapper = styled.div`
+margin-top: 10px;
+`

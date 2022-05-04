@@ -17,6 +17,7 @@ const FavoriteMovieBlock: React.FC<IFavoriteMovieProps> = ({
   handleIsWatched,
   handleDeleteMovie,
   isBlockView,
+  moviesId,
 }) => {
   return (
     <MoviesWrapper isBlockView={isBlockView}>
@@ -24,7 +25,7 @@ const FavoriteMovieBlock: React.FC<IFavoriteMovieProps> = ({
         return (
           <FavoriteMovieCard
             key={movie.id}
-            isWatched={movie.isWatched}
+            isWatched={moviesId.includes(movie.id) ? true : false}
             isBlockView={isBlockView}
           >
             <Title>{movie.title}</Title>

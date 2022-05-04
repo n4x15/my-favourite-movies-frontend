@@ -14,7 +14,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import { MOVIES } from "src/graphql/query/graphql.query";
 import { ADD_MOVIE } from "src/graphql/mutation/graphql.mutation";
 import { CircularProgress, Pagination } from "@mui/material";
-import { pageCount } from "./utils/constant";
+import i18n from "src/i18n";
+import { getOrWriteFunction, getUserData, saveMovie } from "src/Utils";
 
 const AddMoviePage = () => {
   const [year, setYear] = useState<number>(2010);
@@ -23,15 +24,37 @@ const AddMoviePage = () => {
   const { isBlockView, changeBlockView } = useBlockView();
   const { genres, handleGenres, genresId } = useGenres();
   const [page, setPage] = useState<number>();
-  const { refetch, loading } = useQuery(MOVIES, {
-    variables: { filters: { year, rating, genresId, page } },
-    onCompleted: (data) => setMovies(data.Movies),
-    notifyOnNetworkStatusChange: true,
+  const [pageCount, setPageCount] = useState<number>(1);
+  const { data, loading } = useQuery(MOVIES, {
+    variables: {
+      filters: { year, rating, genresId, page, language: i18n.language },
+    },
+    onCompleted: (data) => (
+      setMovies(data.Movies.results), setPageCount(data.Movies.totalPages)
+    ),
   });
-  const [addMovie] = useMutation(ADD_MOVIE, { refetchQueries: [MOVIES] });
+  const [addMovie] = useMutation(ADD_MOVIE);
+  const [moviesId, setMoviesId] = useState<number[]>([]);
+
+  const getData = (data: []) => {
+    const moviesArray: number[] = [];
+    data.forEach(
+      (movie: IMovie) => movie.isSaved && moviesArray.push(movie.id)
+    );
+    return moviesArray;
+  };
 
   useEffect(() => {
-    refetch();
+    if (!loading) {
+      setMoviesId(
+        getOrWriteFunction("userMoviesIDs", getData, data.Movies.results)
+      );
+    }
+  }, [data]);
+
+  useEffect(() => {
+    const moviesArray = getUserData("userMoviesIDs");
+    setMoviesId(moviesArray);
   }, []);
 
   const handleChangeSelect = (year: string) => {
@@ -43,7 +66,11 @@ const AddMoviePage = () => {
 
   const handleSaveMovies = (id: number) => {
     addMovie({ variables: { addMovieId: id } });
+    saveMovie(id);
+    const moviesArray = getUserData("userMoviesIDs");
+    setMoviesId(moviesArray);
   };
+
   const handleChangePage = (page: number) => {
     setPage(page);
   };
@@ -80,6 +107,7 @@ const AddMoviePage = () => {
           movies={movies}
           handleClick={handleSaveMovies}
           isBlockView={isBlockView}
+          moviesId={moviesId}
         />
       )}
     </div>

@@ -4,7 +4,13 @@ import logo from "./assets/logo.svg";
 import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import { Form } from "react-final-form";
-import { LoginForm, FormWrapper, Label, ErrLabel } from "./assets/LoginPageStyledComponents";
+import {
+  LoginForm,
+  FormWrapper,
+  Label,
+  ErrLabel,
+  ButtonWrapper,
+} from "./assets/LoginPageStyledComponents";
 import { FORM_ERROR } from "final-form";
 import LoginField from "./components/LoginField";
 import { useMutation } from "@apollo/client";
@@ -16,7 +22,7 @@ const LoginPage = () => {
   const [auth] = useMutation(LOG_IN, {
     onCompleted: (data) =>
       localStorage.setItem("userToken", data.logIn.accessToken),
-      onError: (error) => error,
+    onError: (error) => error,
   });
 
   const onSubmit = async (input: { login: string; password: string }) => {
@@ -45,19 +51,25 @@ const LoginPage = () => {
         }}
         render={({ submitError, handleSubmit }) => (
           <LoginForm onSubmit={handleSubmit}>
-            <img src={logo} alt="logo" className="w-100"/>
+            <img src={logo} alt='logo' className='w-100' />
             <Label>{t("auth.login")}</Label>
-            <LoginField name="login" label="auth.login"/>
+            <LoginField name='login' label='auth.login' />
             <Label>{t("auth.password")}</Label>
-            <LoginField name="password" isPassword={true} label="auth.password"/> 
+            <LoginField
+              name='password'
+              isPassword={true}
+              label='auth.password'
+            />
             {submitError && <ErrLabel> {submitError}</ErrLabel>}
-            <Button variant="contained" type="submit">
-              {t("auth.enter")}
-            </Button>
+            <ButtonWrapper>
+              <Button variant='contained' type='submit'>
+                {t("auth.enter")}
+              </Button>
+            </ButtonWrapper>
           </LoginForm>
         )}
       />
- </FormWrapper>
+    </FormWrapper>
   );
 };
 

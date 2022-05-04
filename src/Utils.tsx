@@ -51,7 +51,7 @@ const mapArgsToApi = (filters: GetMoviesArgs): string =>
   Object.entries({
     api_key: process.env.REACT_APP_API_KEY,
     ...filters,
-    ...(filters.genresId ? { "with_genres": `${filters.genresId}` } : {}),
+    ...(filters.genresId ? { with_genres: `${filters.genresId}` } : {}),
     ...(filters.rating ? { "vote_average.gte": `${filters.rating}` } : {}),
     page: 1,
   })
@@ -126,4 +126,19 @@ export const addGenres = (id: number) => {
 export const saveMovie = (id: number) => {
   const movie = getUserData("userMoviesIDs");
   localStorage.setItem("userMoviesIDs", JSON.stringify(checkAdding(movie, id)));
+};
+
+export const getOrWriteFunction = (
+  key: string,
+  getData: (data: []) => number[],
+  data: []
+) => {
+  const userData = getUserData(key);
+  if (userData.length > 0) {
+    return userData;
+  } else {
+    const arrayWithData = getData(data);
+    localStorage.setItem(key, JSON.stringify(arrayWithData));
+    return arrayWithData;
+  }
 };
