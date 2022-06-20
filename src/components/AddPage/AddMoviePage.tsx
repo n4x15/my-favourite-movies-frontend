@@ -22,6 +22,7 @@ import {
   getUserData,
   saveMovie,
 } from "src/Utils";
+import Image from "next/image";
 
 const AddMoviePage = () => {
   const [year, setYear] = useState<number>(2010);
@@ -105,10 +106,10 @@ const AddMoviePage = () => {
       </FiltersWrapper>
       <ButtonsWrapper>
         <button onClick={() => changeBlockView(true)}>
-          <img src={block} className='w-8 mx-3' />
+          <Image src={block} width={30} height={30} />
         </button>
         <button onClick={() => changeBlockView(false)}>
-          <img src={list} className='w-8 mx-3' />
+          <Image src={list} width={30} height={30} />
         </button>
       </ButtonsWrapper>
       <Pagination

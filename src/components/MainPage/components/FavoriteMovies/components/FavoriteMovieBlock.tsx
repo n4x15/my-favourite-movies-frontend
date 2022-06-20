@@ -11,6 +11,7 @@ import cross from "src/components/MainPage/assets/cross.svg";
 import { MoviesWrapper } from "src/components/AddPage/components/MoviesBlock/assets/styles";
 import { CircularProgress } from "@mui/material";
 import Overview from "./OverviewTextField/Overview";
+import Image from "next/image";
 
 const FavoriteMovieBlock: React.FC<IFavoriteMovieProps> = ({
   favoriteMovies,
@@ -33,10 +34,10 @@ const FavoriteMovieBlock: React.FC<IFavoriteMovieProps> = ({
             <Overview overview={movie.overview} />
             <ContentWrapperBlock>
               <button onClick={() => handleIsWatched(movie.id)}>
-                <img src={checkmark} />
+                <Image src={checkmark} width={50} height={50} />
               </button>
               <button onClick={() => handleDeleteMovie(movie.id)}>
-                <img src={cross} />
+                <Image src={cross} width={50} height={50} />
               </button>
             </ContentWrapperBlock>
           </FavoriteMovieCard>
