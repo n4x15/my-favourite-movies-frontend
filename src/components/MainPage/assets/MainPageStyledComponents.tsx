@@ -1,18 +1,19 @@
 import styled from "styled-components";
 
 export const MainPageWrapper = styled.div`
-margin-left: 10px;
-margin-right: 10px;
-`
+  margin-left: 10px;
+  margin-right: 10px;
+`;
 export const LogOutWrapper = styled.div`
-display: flex;
-justify-content: end;
-`
+  display: flex;
+  justify-content: end;
+`;
 export const ButtonsWrapper = styled.div`
-display: flex;
-justify-content: end;
-margin-bottom: 1rem;
-`
+  display: flex;
+  justify-content: end;
+  margin-bottom: 1rem;
+  gap: 1rem;
+`;
 
 export const Button = styled.button`
   border: solid 1px;

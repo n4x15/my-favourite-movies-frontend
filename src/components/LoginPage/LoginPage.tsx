@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import logo from "./assets/logo.svg";
 import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
@@ -15,9 +14,12 @@ import { FORM_ERROR } from "final-form";
 import LoginField from "./components/LoginField";
 import { useMutation } from "@apollo/client";
 import { LOG_IN } from "src/graphql/mutation/graphql.mutation";
+import Image from "next/image";
+import { useRouter } from "next/router";
 
 const LoginPage = () => {
-  const navigate = useNavigate();
+  const { replace } = useRouter();
+
   const { t, i18n } = useTranslation();
   const [auth] = useMutation(LOG_IN, {
     onCompleted: (data) =>
@@ -30,7 +32,7 @@ const LoginPage = () => {
       variables: { login: input.login, password: input.password },
     });
     return !authentication.errors
-      ? (navigate("/main-page"),
+      ? (replace("/main-page"),
         localStorage.setItem("currentUser", input.login))
       : { [FORM_ERROR]: t("auth.incorrectUser") };
   };
@@ -51,7 +53,7 @@ const LoginPage = () => {
         }}
         render={({ submitError, handleSubmit }) => (
           <LoginForm onSubmit={handleSubmit}>
-            <img src={logo} alt='logo' className='w-100' />
+            <Image src={logo} alt='logo' height={250} width={250} />
             <Label>{t("auth.login")}</Label>
             <LoginField name='login' label='auth.login' />
             <Label>{t("auth.password")}</Label>

@@ -1,10 +1,12 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-  const token = localStorage.getItem("userToken");
-  const location = useLocation();
-  if (!token) {
-    return <Navigate to='/' state={{ from: location }} replace />;
+  const { replace, pathname } = useRouter();
+  if (typeof window !== "undefined" && pathname !== "/") {
+    const token = localStorage.getItem("userToken");
+    if (!token) {
+      replace("/");
+    }
   }
   return children;
 };
